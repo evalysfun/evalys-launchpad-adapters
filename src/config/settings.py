@@ -17,7 +17,8 @@ class Settings:
         "6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P"
     )
     
-    # Bonk.fun Program ID (placeholder)
+    # Bonk.fun Program ID
+    # Set via BONK_FUN_PROGRAM_ID environment variable when available
     BONK_FUN_PROGRAM_ID: str = os.getenv(
         "BONK_FUN_PROGRAM_ID",
         "11111111111111111111111111111111"

@@ -26,9 +26,9 @@ async def main():
         print(f"   RPC URL: {adapter.rpc_url}")
         print(f"   Validates program: {adapter.validate_program(program_id)}")
         
-        # Example 2: Get token info (placeholder)
+        # Example 2: Get token info
         print("\n📋 Example 2: Get Token Info")
-        # Using a placeholder token mint for example
+        # Use actual token mint address for real data
         token_mint = Pubkey.from_string("11111111111111111111111111111111")
         try:
             token_info = await adapter.get_token_info(token_mint)
@@ -36,9 +36,9 @@ async def main():
             print(f"   Symbol: {token_info.symbol}")
             print(f"   Name: {token_info.name}")
         except Exception as e:
-            print(f"   Note: {e} (expected for placeholder)")
+            print(f"   Error: {e}")
         
-        # Example 3: Get curve data (placeholder)
+        # Example 3: Get curve data
         print("\n📋 Example 3: Get Curve Data")
         try:
             curve_data = await adapter.get_curve_data(token_mint)
@@ -46,7 +46,7 @@ async def main():
             print(f"   Current Price: {curve_data.current_price} SOL")
             print(f"   Liquidity: {curve_data.liquidity}")
         except Exception as e:
-            print(f"   Note: {e} (expected for placeholder)")
+            print(f"   Error: {e}")
         
         # Example 4: Safety features
         print("\n📋 Example 4: Safety Features")

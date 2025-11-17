@@ -78,24 +78,18 @@ class PumpFunAdapter(LaunchpadAdapter):
         await self.connect()
         
         try:
-            # In a real implementation, this would fetch actual curve data
-            # from Pump.fun's on-chain accounts or API
-            # For now, this is a placeholder structure
-            
-            # Get token account data
-            # This is simplified - real implementation would parse account data
+            # Fetch curve data from on-chain accounts
+            # TODO: Implement on-chain account parsing for Pump.fun bonding curve
             logger.debug(f"Fetching curve data for {token_mint}")
-            
-            # Placeholder data structure
-            # TODO: Implement actual on-chain data fetching
+            # TODO: Parse on-chain account data to populate curve metrics
             curve_data = CurveData(
                 token_mint=token_mint,
-                current_price=0.0,  # Would fetch from on-chain
-                slope=0.0,  # Would calculate from curve
-                liquidity=0.0,  # Would fetch from pool
-                total_supply=0.0,  # Would fetch from mint
-                market_cap=0.0,  # Would calculate
-                timestamp=0.0  # Current timestamp
+                current_price=0.0,
+                slope=0.0,
+                liquidity=0.0,
+                total_supply=0.0,
+                market_cap=0.0,
+                timestamp=0.0
             )
             
             return curve_data
@@ -135,7 +129,6 @@ class PumpFunAdapter(LaunchpadAdapter):
             recent_blockhash = blockhash_resp.value.blockhash
             
             # Build buy instruction
-            # This is simplified - real implementation would build proper Pump.fun instruction
             instruction = self._build_buy_instruction(
                 buyer.pubkey(),
                 token_mint,
@@ -238,15 +231,14 @@ class PumpFunAdapter(LaunchpadAdapter):
         await self.connect()
         
         try:
-            # In real implementation, fetch from on-chain metadata
-            # This is a placeholder
+            # TODO: Fetch token metadata from on-chain accounts
             logger.debug(f"Fetching token info for {token_mint}")
             
             token_info = TokenInfo(
                 mint=token_mint,
-                symbol="",  # Would fetch from metadata
-                name="",  # Would fetch from metadata
-                uri=None  # Would fetch from metadata
+                symbol="",
+                name="",
+                uri=None
             )
             
             return token_info
@@ -265,25 +257,20 @@ class PumpFunAdapter(LaunchpadAdapter):
         """
         Build buy instruction for Pump.fun
         
-        This is a simplified version. Real implementation would:
-        - Derive proper PDAs
-        - Build correct instruction data
-        - Include all required accounts
+        TODO: Implement full instruction building:
+        - Derive required PDAs (bonding curve, associated token accounts)
+        - Serialize instruction data with proper discriminators
+        - Include all required accounts per Pump.fun program spec
         """
-        # Convert SOL to lamports
         lamports = int(sol_amount * 1_000_000_000)
         
-        # Placeholder instruction structure
-        # TODO: Implement actual Pump.fun instruction building
         accounts = [
             AccountMeta(pubkey=buyer, is_signer=True, is_writable=True),
             AccountMeta(pubkey=token_mint, is_signer=False, is_writable=True),
-            # Would add more accounts (bonding curve, etc.)
         ]
         
-        # Placeholder instruction data
-        # Real implementation would serialize proper instruction data
-        data = bytes([0])  # Instruction discriminator + data
+        # TODO: Serialize proper Pump.fun buy instruction data
+        data = bytes([0])
         
         return Instruction(
             program_id=self.program_id,
@@ -301,9 +288,8 @@ class PumpFunAdapter(LaunchpadAdapter):
         """
         Build sell instruction for Pump.fun
         
-        Similar to buy, but for selling tokens
+        TODO: Implement full sell instruction building
         """
-        # Placeholder - similar structure to buy
         accounts = [
             AccountMeta(pubkey=seller, is_signer=True, is_writable=True),
             AccountMeta(pubkey=token_mint, is_signer=False, is_writable=True),

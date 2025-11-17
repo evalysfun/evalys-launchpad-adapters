@@ -29,16 +29,13 @@ class BehaviorSanitizer:
         Returns:
             Sanitized instruction
         """
-        # In a real implementation, this would:
+        # TODO: Implement sanitization logic:
         # - Remove identifying metadata
         # - Normalize account ordering
         # - Standardize instruction structure
         # - Remove timing signatures
         
-        # For now, return instruction as-is
-        # TODO: Implement actual sanitization logic
         logger.debug("Sanitizing instruction")
-        
         return instruction
     
     def normalize_accounts(self, instruction: Instruction) -> Instruction:
@@ -74,9 +71,6 @@ class BehaviorSanitizer:
         Returns:
             Instruction without metadata
         """
-        # Remove any identifying patterns from instruction data
-        # This is a placeholder - real implementation would parse
-        # and clean instruction data
-        
+        # TODO: Parse and clean instruction data to remove identifying patterns
         return instruction
 

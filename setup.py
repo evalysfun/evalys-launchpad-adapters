@@ -14,7 +14,6 @@ setup(
     name="evalys-launchpad-adapters",
     version="0.1.0",
     author="Evalys Team",
-    author_email="team@evalys.io",
     description="Launchpad adapters for Pump.fun, Bonk.fun, and other platforms",
     long_description=long_description,
     long_description_content_type="text/markdown",

@@ -16,8 +16,9 @@ from ..utils.logger import get_logger
 
 logger = get_logger(__name__)
 
-# Bonk.fun Program ID (placeholder - update with actual program ID)
-BONK_FUN_PROGRAM_ID = Pubkey.from_string("11111111111111111111111111111111")  # Placeholder
+# Bonk.fun Program ID
+# Update with actual program ID when available
+BONK_FUN_PROGRAM_ID = Pubkey.from_string("11111111111111111111111111111111")
 
 
 class BonkFunAdapter(LaunchpadAdapter):
