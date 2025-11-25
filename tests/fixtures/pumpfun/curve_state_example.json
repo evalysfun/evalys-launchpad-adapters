@@ -1,0 +1,16 @@
+{
+  "description": "Example Pump.fun curve state snapshot",
+  "token_mint": "example_token_mint",
+  "timestamp": 1703520000,
+  "curve_state": {
+    "current_price": 0.000123,
+    "virtual_sol_reserves": 50.5,
+    "virtual_token_reserves": 410000000,
+    "real_sol_reserves": 2.5,
+    "real_token_reserves": 20000000,
+    "total_supply": 1000000000,
+    "market_cap": 123000
+  },
+  "note": "This is a placeholder fixture. Replace with actual on-chain data when available."
+}
+

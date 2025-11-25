@@ -123,12 +123,25 @@ curl "http://localhost:8002/api/v1/launchpad/launchpads"
 
 ```
 Launchpad Adapters
-├── Base Adapter        # Abstract interface
+├── Base Adapter        # Unified adapter interface
 ├── Pump.fun Adapter    # Pump.fun implementation
-├── Bonk.fun Adapter    # Bonk.fun implementation
+│   ├── Program ID: 6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P
+│   ├── Buy/Sell instructions
+│   └── Curve state fetching
+├── Bonk.fun Adapter    # Bonk.fun implementation (in development)
+│   └── Framework ready, awaiting program details
 ├── Generic Adapter     # Configurable adapter
 └── Safety Layer        # Allowlists, validation, sanitization
 ```
+
+**Adapter Interface**: All adapters implement:
+- `fetch_curve_state`: Get current curve state
+- `quote_buy` / `quote_sell`: Get quotes with slippage
+- `build_buy_tx` / `build_sell_tx`: Build transactions
+- `parse_event`: Extract events from transactions
+- `simulate_tx`: Simulate before submission
+
+See [Adapter Interface](docs/adapter-interface.md) for detailed specification.
 
 ## 🛡️ Safety Features
 
@@ -172,25 +185,39 @@ export API_PORT=8002
 
 ## 📝 Implementation Status
 
-### Pump.fun Adapter
-- ✅ Framework structure
-- ✅ Safety features
-- ⚠️ Instruction building (needs actual Pump.fun program interface)
-- ⚠️ On-chain data fetching (needs implementation)
+### Implemented (v0.1)
 
-### Bonk.fun Adapter
-- ✅ Framework structure
-- ⚠️ Full implementation needed
+- ✅ **Unified Adapter Interface**: Common interface for all adapters
+- ✅ **Pump.fun Adapter**: 
+  - ✅ Framework structure
+  - ✅ Program ID: `6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P`
+  - ✅ Buy/sell transaction building (framework)
+  - ✅ Curve state fetching (framework)
+  - ✅ Quote calculation (framework)
+  - ✅ Safety features (allowlists, validation, sanitization)
+- ✅ **Bonk.fun Adapter**: 
+  - ✅ Framework structure
+  - ⏳ Program ID: Awaiting details
+  - ⏳ Full implementation: Planned
+- ✅ **Safety Layer**: Allowlists, validation, sanitization
+- ✅ **Documentation**: Adapter interface, compatibility matrix, adapter READMEs
+- ✅ **Demo Scripts**: Pump.fun ghost buy, Bonk.fun ghost sell demos
+- ✅ **Test Fixtures**: Placeholder fixtures for golden tests
 
-### Generic Adapter
-- ✅ Framework structure
-- ⚠️ Configuration-based implementation needed
+### Planned
 
-**Note**: The adapters provide the framework and structure. Actual instruction building requires:
-- Pump.fun/Bonk.fun program IDLs
-- Proper account derivation
-- Instruction data serialization
-- On-chain account parsing
+- ⏳ **Full Pump.fun Implementation**: Complete instruction building with real program interface
+- ⏳ **Bonk.fun Implementation**: Full implementation when program details available
+- ⏳ **Real Transaction Fixtures**: Capture and add real transaction fixtures
+- ⏳ **Golden Tests**: Tests comparing outputs to known-good transactions
+- ⏳ **Additional Launchpads**: Bags.fm, LetsBonk, etc.
+- ⏳ **Multi-LP Normalization**: Unified interface across different LP models
+
+**Note**: The adapters provide the framework and structure. Full implementation requires:
+- Complete program IDLs and instruction details
+- Proper account derivation and PDA calculation
+- Instruction data serialization matching program format
+- On-chain account parsing for curve state
 
 ## 🧪 Testing
 
@@ -198,9 +225,41 @@ export API_PORT=8002
 # Run tests
 pytest
 
+# Run golden tests
+pytest tests/test_golden.py
+
 # With coverage
 pytest --cov=src --cov-report=html
 ```
+
+### Golden Tests
+
+Golden tests verify adapter outputs match known-good transaction fixtures:
+
+- **build_buy_tx_matches_fixture**: Built transaction matches fixture structure
+- **parse_event_extracts_data**: Event parsing extracts correct mint/amounts
+- **quote_matches_observed**: Quote calculation matches observed outputs
+
+See `tests/test_golden.py` for details.
+
+### Demo Scripts
+
+Run adapter demos:
+
+```bash
+# Pump.fun ghost buy demo
+python examples/pumpfun-ghost-buy.py
+
+# Bonk.fun ghost sell demo
+python examples/bonkfun-ghost-sell.py
+```
+
+These demonstrate the full adapter flow:
+- Fetch curve state
+- Get quote
+- Build transaction
+- Simulate transaction
+- Privacy configuration
 
 ## 📦 Project Structure
 
@@ -210,7 +269,11 @@ evalys-launchpad-adapters/
 │   ├── adapters/       # Launchpad adapters
 │   │   ├── base_adapter.py
 │   │   ├── pumpfun_adapter.py
+│   │   ├── pumpfun/
+│   │   │   └── README.md      # Pump.fun program details
 │   │   ├── bonkfun_adapter.py
+│   │   ├── bonkfun/
+│   │   │   └── README.md      # Bonk.fun program details
 │   │   └── generic_adapter.py
 │   ├── safety/         # Safety and compliance
 │   │   ├── allowlist.py
@@ -219,7 +282,17 @@ evalys-launchpad-adapters/
 │   ├── api/            # REST API
 │   ├── config/         # Configuration
 │   └── utils/          # Utilities
-├── tests/              # Tests
+├── docs/
+│   ├── adapter-interface.md  # Unified adapter interface
+│   └── compatibility.md      # Compatibility matrix
+├── examples/
+│   ├── pumpfun-ghost-buy.py  # Pump.fun demo
+│   └── bonkfun-ghost-sell.py # Bonk.fun demo
+├── tests/
+│   ├── fixtures/       # Transaction fixtures
+│   │   └── pumpfun/
+│   └── test_golden.py  # Golden tests
+├── CHANGELOG.md
 ├── requirements.txt
 ├── setup.py
 └── README.md
@@ -246,12 +319,54 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - [evalys-curve-intelligence](https://github.com/evalysfun/evalys-curve-intelligence) - Curve analysis
 - [evalys-execution-engine](https://github.com/evalysfun/evalys-execution-engine) - Transaction execution
 
+## 📚 Documentation
+
+- **[Adapter Interface](docs/adapter-interface.md)**: Unified interface specification
+- **[Compatibility Matrix](docs/compatibility.md)**: Program version compatibility
+- **[Pump.fun README](src/adapters/pumpfun/README.md)**: Pump.fun program details
+- **[Bonk.fun README](src/adapters/bonkfun/README.md)**: Bonk.fun implementation status
+- **[Changelog](CHANGELOG.md)**: Version history
+
+## 📊 Measurable Behavior
+
+Instead of vague claims, here's what the adapters actually do:
+
+**Unified Interface**:
+- All adapters implement: `fetch_curve_state`, `quote_buy`, `quote_sell`, `build_buy_tx`, `build_sell_tx`, `parse_event`, `simulate_tx`
+- Consistent data models: `CurveState`, `BuyArgs`, `SellArgs`, `Quote`, `AdapterEvent`
+
+**Pump.fun Adapter**:
+- Program ID: `6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P`
+- Instructions: `buy`, `sell` with discriminators
+- Accounts: 7 accounts (bonding curve PDA, token accounts, system program, etc.)
+- PDA Derivation: `find_program_address(["bonding-curve", mint], program_id)`
+
+**Quote Calculation**:
+- Input: SOL amount or token amount
+- Output: Expected tokens/SOL, price impact, slippage, fees
+- Slippage protection: `min_output = output * (1 - slippage)`
+
+**Transaction Building**:
+- Instructions: Buy/sell instruction + compute budget + priority fee
+- Accounts: All required accounts in correct order
+- Simulation: Verify transaction before submission
+
+See [Adapter Interface](docs/adapter-interface.md) and adapter READMEs for detailed specifications.
+
 ## 📞 Support
 
 - **Issues**: [GitHub Issues](https://github.com/evalysfun/evalys-launchpad-adapters/issues)
-- **Discord**: [Coming Soon]
+- **Documentation**: See `docs/` directory and adapter READMEs
+- **Related Projects**: See below
+
+## 🔗 Related Projects
+
+- [evalys-privacy-engine](https://github.com/evalysfun/evalys-privacy-engine) - Privacy mode orchestration
+- [evalys-burner-swarm](https://github.com/evalysfun/evalys-burner-swarm) - Burner wallet management
+- [evalys-curve-intelligence](https://github.com/evalysfun/evalys-curve-intelligence) - Curve analysis
+- [evalys-execution-engine](https://github.com/evalysfun/evalys-execution-engine) - Transaction execution
 
 ---
 
-**Evalys Launchpad Adapters** - Unified interface for memecoin launchpads 🔌
+**Evalys Launchpad Adapters** - Unified interface with documented program details 🔌
 

@@ -1,0 +1,49 @@
+{
+  "description": "Example Pump.fun sell transaction fixture",
+  "program_id": "6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P",
+  "signature": "example_signature_placeholder",
+  "accounts": [
+    {
+      "pubkey": "bonding_curve_pda",
+      "is_signer": false,
+      "is_writable": true
+    },
+    {
+      "pubkey": "seller_token_account",
+      "is_signer": false,
+      "is_writable": true
+    },
+    {
+      "pubkey": "seller_sol_account",
+      "is_signer": false,
+      "is_writable": true
+    },
+    {
+      "pubkey": "token_mint",
+      "is_signer": false,
+      "is_writable": false
+    },
+    {
+      "pubkey": "system_program",
+      "is_signer": false,
+      "is_writable": false
+    },
+    {
+      "pubkey": "token_program",
+      "is_signer": false,
+      "is_writable": false
+    },
+    {
+      "pubkey": "seller_wallet",
+      "is_signer": true,
+      "is_writable": true
+    }
+  ],
+  "instruction_data": {
+    "discriminator": "sell",
+    "token_amount": 1000000000,
+    "min_sol_out": 100000000
+  },
+  "note": "This is a placeholder fixture. Replace with actual captured transaction when available."
+}
+
